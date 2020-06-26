@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node fuc.js",
+    "watch": "nodemon fuc.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -16,6 +17,7 @@
     "mongoose": "^5.9.20",
     "morgan": "~1.9.1",
     "socket.io": "^2.3.0",
+    "nodemon": "^2.0.3",
     "uuid": "^8.2.0"
   }
 }
