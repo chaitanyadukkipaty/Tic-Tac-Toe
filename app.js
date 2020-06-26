@@ -12,6 +12,10 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const uuid = require("uuid");
 const mongoose = require("mongoose");
+// mongoose.connect("mongodb://localhost:27017/tic-tac-toe", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 mongoose.connect(
   "mongodb+srv://chaitanya:chaitanya@cluster0-yqv9c.mongodb.net/tictactoe?retryWrites=true&w=majority",
   {
@@ -178,6 +182,21 @@ async function getGameState({ players, roomId, source }) {
       res.bid[tx.playerId] = tx.value;
       res.bid.status = "DONE";
       res.board = tx.board;
+      if (res[players[0].playerId] == 0 && res[players[0].playerId] == 0) {
+        res.bidWinner = null;
+        res.bid.status = "DRAW";
+        res["bid"][players[0].playerId] = 0;
+        res["bid"][players[1].playerId] = 0;
+        res.move = res.bidWinner;
+        return res;
+      }
+      if (res["bid"][players[0].playerId] == res["bid"][players[1].playerId]) {
+        res.bidWinner = null;
+        res["bid"][players[0].playerId] = 0;
+        res["bid"][players[1].playerId] = 0;
+        res.move = res.bidWinner;
+        return res;
+      }
       res.bidWinner =
         res["bid"][players[0].playerId] > res["bid"][players[1].playerId]
           ? players[0].playerId
