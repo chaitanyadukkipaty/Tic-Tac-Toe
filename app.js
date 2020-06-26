@@ -59,9 +59,9 @@ app.post("/symbolPlaced", async (req, res) => {
       Timestamp: new Date(),
     };
     const state = new Game(payload);
-    state.save();
     const source = await Game.find({ roomId: roomId });
-    //source.push(payload);
+    source.push(payload);
+    state.save();
     const result = await getGameState({ players, roomId, source });
     console.log(result);
     io.in(players[0].playerId).emit("Move", result);
@@ -90,9 +90,9 @@ app.post("/bid", async (req, res) => {
       Timestamp: new Date(),
     };
     const state = new Game(payload);
-    state.save();
     const source = await Game.find({ roomId: roomId });
-    //source.push(payload);
+    source.push(payload);
+    state.save();
     const result = await getGameState({ players, roomId, source });
     console.log(result);
     io.in(players[0].playerId).emit("gameState", result);
