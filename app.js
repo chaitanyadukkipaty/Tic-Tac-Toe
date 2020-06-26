@@ -201,5 +201,5 @@ async function getGameState({ players, roomId, source }) {
 }
 
 http.listen(8000, (req, res) => {
-  console.log("Listening on 8082");
+  console.log("Listening on 8000");
 });
