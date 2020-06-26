@@ -42,11 +42,6 @@ app.post("/", (req, res) => {
   res.send({ room });
 });
 
-app.use(express.static(path.join(__dirname, "build")));
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 app.post("/symbolPlaced", async (req, res) => {
   const { roomId, playerId, value, board } = req.body;
   console.log("REQ", req.body);
