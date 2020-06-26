@@ -12,10 +12,13 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const uuid = require("uuid");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/tic-tac-toe", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://chaitanya:chaitanya@cluster0-yqv9c.mongodb.net/tictactoe?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 const Game = require("./models/game");
 const Room = require("./models/room");
 
@@ -31,10 +34,6 @@ const randomString = function (len, bits) {
 };
 
 const rooms = [];
-
-app.get("/", (req, res) => {
-  res.sendStatus(200);
-});
 
 app.post("/", (req, res) => {
   const room = uuid.v4();
