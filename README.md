@@ -2,13 +2,15 @@
 
   ![Tic-Tac-Toe](https://imgur.com/kXrYcQr.png)
   [![Status](https://img.shields.io/badge/status-active-green.svg)]()
+  [![GitHub Issues](https://img.shields.io/github/issues/chaitanyadukkipaty/LegoDoc.svg)](https://github.com/chaitanyadukkipaty/Tic-Tac-Toe/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/chaitanyadukkipaty/LegoDoc.svg)](https://github.com/chaitanyadukkipaty/Tic-Tac-Toe/pulls)
   [![License](https://img.shields.io/badge/license-GNU-blue.svg)](LICENSE.md)
 
 </div>
 
 ---
 
-<p align="center">Open source platform for sharing legal document templates.</p>
+<p align="center">Tic Tac Toe with a <b>Twist</b>.</p>
 <p align="center">Currently live on: http://159.65.145.166:8000</p>
 
 # Table of Content
