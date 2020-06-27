@@ -1,0 +1,19 @@
+.root {
+  display: "flex";
+  background-color: #121212;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.button {
+  background-color: #bb86fc;
+  border: none;
+  width: 20%;
+}
+.avatar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}

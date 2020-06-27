@@ -1,0 +1,55 @@
+.root {
+  display: "flex";
+}
+.title {
+  flex-grow: 1;
+}
+.font {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.Home {
+  background-color: #121212;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.nav-color {
+  background-color: #121212;
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  width: auto;
+  height: auto;
+  background-color: #282c34;
+  color: white;
+}
+.card-title {
+  text-align: center;
+  padding: 5dp;
+  font-size: calc(14px + 2vmin);
+}
+.card-body {
+  font-size: calc(2px + 2vmin);
+}
+.input {
+  width: auto;
+}
+.button {
+  background-color: #bb86fc;
+  border: none;
+  width: 20%;
+}
+.start-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
