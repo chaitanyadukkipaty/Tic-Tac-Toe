@@ -113,6 +113,17 @@ app.post("/bid", async (req, res) => {
   }
 });
 
+app.post("/getPlayers", async (req, res) => {
+  const { roomId } = req.body;
+  try {
+    const players = await Room.find({ roomId: roomId });
+    res.send(players);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("Request to join chatroom");
   console.log(socket.id);
@@ -131,6 +142,7 @@ io.on("connection", (socket) => {
           const result = await getGameState({ players, roomId, source });
           socket.emit("Reload", result);
         }
+        io.in(player[0].playerId).emit("joined", players);
       }
       if (players.length < 2) {
         if (player.length === 0) {
@@ -144,12 +156,14 @@ io.on("connection", (socket) => {
           };
           const room = new Room(payload);
           room.save();
+          players.push(payload);
         }
         socket.join(playerId, function () {
           console.log(socket.id + " has subscribed");
           console.log("Socket now in rooms", io.sockets.adapter.rooms);
         });
         socket.emit("Char", players.length === 0 ? "X" : "O");
+        for (let play of players) io.in(play.playerId).emit("joined", players);
       }
     }
   });
