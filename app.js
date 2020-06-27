@@ -75,6 +75,10 @@ app.post("/symbolPlaced", async (req, res) => {
     console.log(result);
     io.in(players[0].playerId).emit("Move", result);
     io.in(players[1].playerId).emit("Move", result);
+    const Msg = `${playerId} has made a move`;
+    for (let play of players) {
+      io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
+    }
     res.send({ status: true });
   } catch (error) {
     console.error(error);
@@ -106,6 +110,10 @@ app.post("/bid", async (req, res) => {
     console.log(result);
     io.in(players[0].playerId).emit("gameState", result);
     io.in(players[1].playerId).emit("gameState", result);
+    const Msg = `${playerId} has made a bid`;
+    for (let play of players) {
+      io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
+    }
     res.send({ status: true });
   } catch (error) {
     console.error(error);
@@ -127,6 +135,11 @@ app.post("/getPlayers", async (req, res) => {
 io.on("connection", (socket) => {
   console.log("Request to join chatroom");
   console.log(socket.id);
+  socket.on("sendMsg", async ({ Msg, roomId }) => {
+    const players = await Room.find({ roomId: roomId });
+    for (let play of players)
+      io.in(play.playerId).emit("recieveMsg", { system: false, Msg });
+  });
   socket.on("joinRoom", async ({ roomId, playerId }) => {
     if (roomId != null) {
       const players = await Room.find({ roomId: roomId });

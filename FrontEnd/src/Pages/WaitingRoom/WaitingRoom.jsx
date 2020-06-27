@@ -37,6 +37,11 @@ function WaitingRoom() {
   }
 
   useEffect(() => {
+    textInput.current.addEventListener("keydown", (e) => {
+      if (e.keyCode === 13) {
+        joinRoom();
+      }
+    });
     async function getData() {
       const payload = { roomId: roomId };
       const { data } = await axios.post(`${baseUrl}/getPlayers`, payload);
@@ -89,17 +94,19 @@ function WaitingRoom() {
             </Row>
           </Col>
           <Col className="p-4 d-flex flex-column justify-content-center" md={6}>
-            <InputGroup className=" input">
-              <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                ref={textInput}
-                placeholder="Username"
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
+            <div className="d-flex  justify-content-center p-4">
+              <InputGroup className=" input">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  ref={textInput}
+                  placeholder="Username"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </InputGroup>
+            </div>
             <Row>
               {!joinbtn ? (
                 <Col className=" d-flex  justify-content-center p-4 ">
