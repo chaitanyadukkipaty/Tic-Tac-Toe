@@ -1,15 +1,25 @@
 .root {
-  display: "flex";
   background-color: #121212;
   min-height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+}
+.fill-height {
+  min-height: 50vh;
+}
+.fill-width {
+  width: 100%;
 }
 .button {
   background-color: #bb86fc;
   border: none;
-  width: 20%;
+  width: auto;
+}
+@media only screen and (min-width: 768px) {
+  .player-card {
+    min-width: 18rem;
+  }
+}
+.player-card {
+  width: 9rem;
 }
 .avatar {
   display: flex;
@@ -17,3 +27,4 @@
   align-items: center;
   justify-content: space-evenly;
 }
+

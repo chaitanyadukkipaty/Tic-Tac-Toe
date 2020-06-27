@@ -3,7 +3,14 @@ import "./WaitingRoom.css";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { baseUrl } from "../../config.json";
-import { Card, Button, InputGroup, FormControl } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  InputGroup,
+  FormControl,
+  Col,
+  Row,
+} from "react-bootstrap";
 import logo from "../../assets/images/avatar.png";
 import openSocket from "socket.io-client";
 const socket = openSocket(baseUrl);
@@ -50,7 +57,7 @@ function WaitingRoom() {
   }, []);
 
   const Avatar = ({ username }) => (
-    <Card style={{ width: "18rem" }}>
+    <Card className="player-card">
       <Card.Img variant="top" src={logo} />
       <Card.Body>
         <Card.Title>{username}</Card.Title>
@@ -60,40 +67,68 @@ function WaitingRoom() {
   return (
     <>
       <div className="root">
-        {players.length && <p className="font">Players in the Game : </p>}
-        <div className="mb-3 avatar">
-          {players.map((player, i) => (
-            <Avatar key={i} username={player.playerId} />
-          ))}
-        </div>
-        <InputGroup className="mb-3 input">
-          <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            ref={textInput}
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-        </InputGroup>
-        <Button
-          className="button"
-          onClick={() => joinRoom()}
-          disabled={joinbtn}
-        >
-          {"Join"}
-        </Button>
-        <Button
-          className="button"
-          onClick={() => startGame()}
-          disabled={startbtn}
-        >
-          {"Start"}
-        </Button>
+        <Row className="fill-width">
+          <Col
+            md={6}
+            className="d-flex flex-column justify-content-between fill-height"
+          >
+            {players.length === 0 && (
+              <div className="font text-center">
+                Waiting for players to join:{" "}
+              </div>
+            )}
+            {players.length > 0 && (
+              <div className="font text-center">Players in the Game : </div>
+            )}
+            <Row className=" d-flex  justify-content-center p-4 ">
+              {players.map((player, i) => (
+                <Col md={5} xs={6} className="p-2">
+                  <Avatar key={i} username={player.playerId} />
+                </Col>
+              ))}
+            </Row>
+          </Col>
+          <Col className="p-4 d-flex flex-column justify-content-center" md={6}>
+            <InputGroup className=" input">
+              <InputGroup.Prepend>
+                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                ref={textInput}
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </InputGroup>
+            <Row>
+              {!joinbtn ? (
+                <Col className=" d-flex  justify-content-center p-4 ">
+                  <Button
+                    className="button"
+                    onClick={() => joinRoom()}
+                    disabled={joinbtn}
+                  >
+                    {"Join"}
+                  </Button>
+                </Col>
+              ) : (
+                <Col className=" d-flex  justify-content-center p-4 ">
+                  <Button
+                    className="button"
+                    onClick={() => startGame()}
+                    disabled={startbtn}
+                  >
+                    {"Start"}
+                  </Button>
+                </Col>
+              )}
+            </Row>
+          </Col>
+        </Row>
       </div>
     </>
   );
 }
 
 export default WaitingRoom;
+
