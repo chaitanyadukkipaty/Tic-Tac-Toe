@@ -1,6 +1,6 @@
 <div align="center">
 
-  ![Tic-Tac-Toe](https://imgur.com/kXrYcQr)
+  ![Tic-Tac-Toe](https://imgur.com/kXrYcQr.png)
   [![Status](https://img.shields.io/badge/status-active-green.svg)]()
   [![License](https://img.shields.io/badge/license-GNU-blue.svg)](LICENSE.md)
 
