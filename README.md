@@ -1,6 +1,6 @@
 <div align="center">
 
-  ![Tic-Tac-Toe](https://images.app.goo.gl/hesGfxatPx6BZyBr7)
+  ![Tic-Tac-Toe](https://imgur.com/kXrYcQr)
   [![Status](https://img.shields.io/badge/status-active-green.svg)]()
   [![License](https://img.shields.io/badge/license-GNU-blue.svg)](LICENSE.md)
 
@@ -89,7 +89,7 @@ The application will now be running on https://localhost:8080/
 
 ## Contributing<a name="contributing"></a>
 
-1. Fork it (<https://github.com/chaitanyadukkipaty/LegoDoc/fork>)
+1. Fork it (<https://github.com/chaitanyadukkipaty/Tic-Tac-Toe/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
