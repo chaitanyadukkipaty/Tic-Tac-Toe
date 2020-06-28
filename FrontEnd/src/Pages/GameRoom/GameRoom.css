@@ -1,0 +1,12 @@
+.root {
+  background-color: #121212;
+  min-height: 100vh;
+}
+.fill-width {
+  width: 100%;
+}
+@media only screen and (max-width: 768px) {
+  .chat-visible {
+    display: none;
+  }
+}

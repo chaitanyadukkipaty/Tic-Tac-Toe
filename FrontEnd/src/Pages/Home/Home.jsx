@@ -16,7 +16,7 @@ function Home() {
       <div className="home-container">
         <Container fluid>
           <Navbar className="nav-color" expand="lg" variant="dark">
-            <Navbar.Brand>Tic-Tac-Toe</Navbar.Brand>
+            <Navbar.Brand>Big-Bad-Joe</Navbar.Brand>
           </Navbar>
           <Col
             md={{ span: 6, offset: 3 }}
@@ -64,4 +64,3 @@ function Home() {
 }
 
 export default Home;
-

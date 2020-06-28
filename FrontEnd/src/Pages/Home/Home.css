@@ -3,7 +3,7 @@
   min-height: 100vh;
 }
 .fill {
-  height: max-content;
+  min-height: 100vh;
 }
 .Home {
   background-color: #121212;
@@ -47,4 +47,3 @@
 .test {
   min-height: 100vh;
 }
-

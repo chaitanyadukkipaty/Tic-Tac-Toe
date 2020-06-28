@@ -138,4 +138,3 @@ function WaitingRoom() {
 }
 
 export default WaitingRoom;
-
