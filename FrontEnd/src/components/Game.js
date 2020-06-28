@@ -128,6 +128,7 @@ function Game({ playerId, roomId }) {
           </InputGroup.Prepend>
           <FormControl
             ref={textInput}
+            type="number"
             placeholder="Bid"
             aria-label="Bid"
             aria-describedby="basic-addon1"
