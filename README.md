@@ -1,6 +1,7 @@
 <div align="center">
 
-  ![Tic-Tac-Toe](https://imgur.com/kXrYcQr.png)
+  ![Tic-Tac-Toe](https://imgur.com/pT3sxGK.png)
+  
   [![Status](https://img.shields.io/badge/status-active-green.svg)]()
   [![GitHub Issues](https://img.shields.io/github/issues/chaitanyadukkipaty/LegoDoc.svg)](https://github.com/chaitanyadukkipaty/Tic-Tac-Toe/issues)
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/chaitanyadukkipaty/LegoDoc.svg)](https://github.com/chaitanyadukkipaty/Tic-Tac-Toe/pulls)
