@@ -1,4 +1,4 @@
-async function getGameState({ players, roomId, source }) {
+function getGameState({ players, source }) {
   const defaultResult = {};
   defaultResult[players[0].playerId] = 100;
   defaultResult["game"] = null;
@@ -15,8 +15,8 @@ async function getGameState({ players, roomId, source }) {
     if (i == 0) {
       res = defaultResult;
     }
-    if (tx.event == "bidPlaced") {
-      if (res.bid.status == "DONE") {
+    if (tx.event === "bidPlaced") {
+      if (res.bid.status === "DONE") {
         res.bid.status = "PROGRESS";
         res.bid[tx.playerId] = tx.value;
         res.board = tx.board;
@@ -25,7 +25,7 @@ async function getGameState({ players, roomId, source }) {
       res.bid[tx.playerId] = tx.value;
       res.bid.status = "DONE";
       res.board = tx.board;
-      if (res[players[0].playerId] == 0 && res[players[0].playerId] == 0) {
+      if (res[players[0].playerId] === 0 && res[players[1].playerId] === 0) {
         res.bidWinner = null;
         res.bid.status = "DRAW";
         res["bid"][players[0].playerId] = 0;
@@ -33,7 +33,7 @@ async function getGameState({ players, roomId, source }) {
         res.move = res.bidWinner;
         return res;
       }
-      if (res["bid"][players[0].playerId] == res["bid"][players[1].playerId]) {
+      if (res["bid"][players[0].playerId] === res["bid"][players[1].playerId]) {
         res.bidWinner = null;
         res["bid"][players[0].playerId] = 0;
         res["bid"][players[1].playerId] = 0;
@@ -50,12 +50,10 @@ async function getGameState({ players, roomId, source }) {
       res["bid"][players[1].playerId] = 0;
       return res;
     }
-    if (tx.event == "symbolPlaced") {
-      if (tx.event == "symbolPlaced") {
-        res.game = tx.value;
-        res.move = null;
-        res.board = tx.board;
-      }
+    if (tx.event === "symbolPlaced") {
+      res.game = tx.value;
+      res.move = null;
+      res.board = tx.board;
     }
     return res;
   }, defaultResult);

@@ -42,7 +42,7 @@ module.exports = (io) => {
         event: "symbolPlaced",
       });
       source.push(payload);
-      const result = await getGameState({ players, roomId, source });
+      const result = getGameState({ players, source });
       console.log(result);
       io.in(players[0].playerId).emit("Move", result);
       io.in(players[1].playerId).emit("Move", result);
@@ -73,7 +73,7 @@ module.exports = (io) => {
         event: "bidPlaced",
       });
       source.push(payload);
-      const result = await getGameState({ players, roomId, source });
+      const result = getGameState({ players, source });
       console.log(result);
       io.in(players[0].playerId).emit("gameState", result);
       io.in(players[1].playerId).emit("gameState", result);
@@ -83,6 +83,20 @@ module.exports = (io) => {
         io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
       }
       res.send({ status: true });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  });
+
+  router.post("/getGameState", async (req, res) => {
+    const { roomId } = req.body;
+    try {
+      const players = await findPlayersInRoom({ roomId: roomId });
+      const source = await getGameRecords({ roomId: roomId });
+      const result = getGameState({ players, source });
+      io.in(players[0].playerId).emit("gameState", result);
+      io.in(players[1].playerId).emit("gameState", result);
     } catch (error) {
       console.error(error);
       res.sendStatus(500);
