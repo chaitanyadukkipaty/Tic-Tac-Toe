@@ -10,7 +10,6 @@ function getGameState({ players, source }) {
   defaultResult["bid"][players[1].playerId] = 0;
   defaultResult["bidWinner"] = null;
   defaultResult["move"] = null;
-  console.log(defaultResult);
   const result = source.reduce((res, tx, i) => {
     if (i == 0) {
       res = defaultResult;

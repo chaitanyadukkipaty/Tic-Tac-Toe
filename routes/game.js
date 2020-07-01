@@ -28,7 +28,6 @@ module.exports = (io) => {
 
   router.post("/symbolPlaced", async (req, res) => {
     const { roomId, playerId, value, board } = req.body;
-    console.log("REQ", req.body);
     try {
       const players = await findPlayersInRoom({ roomId: roomId });
       if (players.length < 2) res.send({ status: false });
@@ -43,10 +42,9 @@ module.exports = (io) => {
       });
       source.push(payload);
       const result = getGameState({ players, source });
-      console.log(result);
       io.in(players[0].playerId).emit("Move", result);
       io.in(players[1].playerId).emit("Move", result);
-
+      console.log("Move",source);
       const Msg = `${playerId} has made a move`;
       for (let play of players) {
         io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
@@ -59,7 +57,6 @@ module.exports = (io) => {
 
   router.post("/bid", async (req, res) => {
     const { roomId, playerId, value, board } = req.body;
-    console.log(req.body);
     try {
       const players = await findPlayersInRoom({ roomId: roomId });
       if (players.length < 2) res.send({ status: false });
@@ -74,7 +71,8 @@ module.exports = (io) => {
       });
       source.push(payload);
       const result = getGameState({ players, source });
-      console.log(result);
+      console.log(source);
+      console.log("RESULT",result);
       io.in(players[0].playerId).emit("gameState", result);
       io.in(players[1].playerId).emit("gameState", result);
 
@@ -106,8 +104,8 @@ module.exports = (io) => {
   router.post("/getPlayers", async (req, res) => {
     const { roomId } = req.body;
     try {
-      const players = await getGameRecords({ roomId: roomId });
-      res.send(players);
+      const players = await findPlayersInRoom({ roomId: roomId });
+      res.send({players});
     } catch (error) {
       console.error(error);
       res.sendStatus(500);

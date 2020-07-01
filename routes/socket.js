@@ -14,6 +14,12 @@ function socket({
       for (let play of players)
         io.in(play.playerId).emit("recieveMsg", { system: false, Msg });
     });
+    socket.on("disconnect", function () {
+      socket.emit("disconnected");
+  });
+  socket.on("error", function(){
+    socket.emit("disconnected")
+  })
     socket.on("joinRoom", async ({ roomId, playerId }) => {
       if (roomId != null) {
         const players = await findPlayersInRoom({ roomId: roomId });
@@ -46,7 +52,7 @@ function socket({
           socket.join(playerId, function () {
             console.log(socket.id + " has subscribed");
             console.log("Socket now in rooms", io.sockets.adapter.rooms);
-          });
+          }); 
           socket.emit("Char", players.length === 0 ? "X" : "O");
           for (let play of players)
             io.in(play.playerId).emit("joined", players);
