@@ -61,7 +61,7 @@ module.exports = (io) => {
       const players = await findPlayersInRoom({ roomId: roomId });
       if (players.length < 2) res.send({ status: false });
 
-      const source = await getGameRecords({ roomId: roomId });
+      
       const payload = await addStateToGame({
         playerId,
         roomId,
@@ -69,7 +69,12 @@ module.exports = (io) => {
         board,
         event: "bidPlaced",
       });
-      source.push(payload);
+      const source = await getGameRecords({ roomId: roomId });
+      source.sort((a,b)=>{
+        const atime = new Date(a.Timestamp).getTime();
+        const btime = new Date(b.Timestamp).getTime();
+        return atime-btime;
+      })
       const result = getGameState({ players, source });
       console.log(source);
       console.log("RESULT",result);

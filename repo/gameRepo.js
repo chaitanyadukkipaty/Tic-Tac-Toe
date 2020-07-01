@@ -2,7 +2,7 @@ const Game = require("../models/game");
 const Room = require("../models/room");
 const mongoose = require("mongoose");
 
-function addPlayerToRoom({ playerId, roomId, players }) {
+async function addPlayerToRoom({ playerId, roomId, players }) {
   const id = new mongoose.Types.ObjectId();
   const payload = {
     _id: id,
@@ -12,10 +12,10 @@ function addPlayerToRoom({ playerId, roomId, players }) {
     Timestamp: new Date(),
   };
   const room = new Room(payload);
-  room.save();
+  await room.save();
   return room;
 }
-function addStateToGame({ playerId, roomId, value, board, event }) {
+async function addStateToGame({ playerId, roomId, value, board, event }) {
   const id = new mongoose.Types.ObjectId();
   const payload = {
     _id: id,
@@ -27,22 +27,22 @@ function addStateToGame({ playerId, roomId, value, board, event }) {
     Timestamp: new Date(),
   };
   const state = new Game(payload);
-  state.save();
+  await state.save();
   return state;
 }
 
-function findPlayersInRoom({ roomId }) {
-  const players = Room.find({ roomId: roomId });
+async function findPlayersInRoom({ roomId }) {
+  const players = await Room.find({ roomId: roomId });
   return players;
 }
 
-function findIfPlayerInRoom({ playerId, roomId }) {
-  const player = Room.find({ roomId: roomId, playerId: playerId });
+async function findIfPlayerInRoom({ playerId, roomId }) {
+  const player = await Room.find({ roomId: roomId, playerId: playerId });
   return player;
 }
 
-function getGameRecords({ roomId }) {
-  const source = Game.find({ roomId: roomId });
+async function getGameRecords({ roomId }) {
+  const source = await Game.find({ roomId: roomId });
   return source;
 }
 module.exports = {
