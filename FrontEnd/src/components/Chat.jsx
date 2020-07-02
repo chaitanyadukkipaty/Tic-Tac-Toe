@@ -7,8 +7,8 @@ function Chat({ playerId, roomId }) {
   const [msgs, setMsgs] = useState([]);
 
   const sendChat = () => {
-    const Msg = `${playerId}: ${chat.current.value}`;
-    sendMsg({ Msg, roomId });
+    const Msg = chat.current.value;
+    sendMsg({ playerId, Msg, roomId });
     chat.current.value = "";
   };
 
@@ -18,7 +18,7 @@ function Chat({ playerId, roomId }) {
         sendChat();
       }
     });
-    recieveMsg({ setMsgs, isMobile });
+    recieveMsg({ playerId, setMsgs, isMobile });
   }, []);
   return (
     <div className="chat-room">

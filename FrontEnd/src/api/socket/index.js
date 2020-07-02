@@ -92,16 +92,16 @@ export function reload({
   });
 }
 
-export function recieveMsg({ setMsgs,isMobile }) {
-  socket.on("recieveMsg", ({ system, Msg }) => {
-    setMsgs((prev) => {
-      return [...prev, { system, Msg }];
-    });
-    if(isMobile && system)
+export function recieveMsg({ playerId, setMsgs,isMobile }) {
+  socket.on("recieveMsg", ({ senderId, system, Msg }) => {
+    const message = (senderId===playerId)?`Me: ${Msg}` : `${senderId}: ${Msg}`
+    console.log(message)
+    setMsgs((prev) =>  [...prev, { system, Msg: message }]);
+    if(isMobile && system && senderId!==playerId)
       toast.dark(Msg);
   });
 }
 
-export function sendMsg({ Msg, roomId }) {
-  socket.emit("sendMsg", { Msg, roomId });
+export function sendMsg({ playerId, Msg, roomId }) {
+  socket.emit("sendMsg", { playerId, Msg, roomId });
 }
