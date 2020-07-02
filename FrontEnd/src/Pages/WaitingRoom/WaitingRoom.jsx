@@ -45,7 +45,7 @@ function WaitingRoom() {
     async function getData() {
       const payload = { roomId: roomId };
       const { data } = await axios.post(`${baseUrl}/getPlayers`, payload);
-      setPlayers((prev) => data);
+      setPlayers((prev) => data.players);
       if (data.length === 2) {
         setStartbtn((current) => !current);
         setJoinbtn((current) => !current);
