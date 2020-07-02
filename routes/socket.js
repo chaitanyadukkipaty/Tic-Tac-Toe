@@ -9,10 +9,11 @@ function socket({
   io.on("connection", (socket) => {
     console.log("Request to join chatroom");
     console.log(socket.id);
-    socket.on("sendMsg", async ({ Msg, roomId }) => {
+    socket.on("sendMsg", async ({ playerId ,Msg, roomId }) => {
+      console.log(playerId ,Msg, roomId)
       const players = await findPlayersInRoom({ roomId: roomId });
       for (let play of players)
-        io.in(play.playerId).emit("recieveMsg", { system: false, Msg });
+        io.in(play.playerId).emit("recieveMsg", { senderId: playerId, system: false, Msg });
     });
     socket.on("disconnect", function () {
       socket.emit("disconnected");
