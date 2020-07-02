@@ -44,10 +44,9 @@ module.exports = (io) => {
       const result = getGameState({ players, source });
       io.in(players[0].playerId).emit("Move", result);
       io.in(players[1].playerId).emit("Move", result);
-      console.log("Move",source);
-      const Msg = `${playerId} has made a move`;
+      const Msg = "Made a Move";
       for (let play of players) {
-        io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
+        io.in(play.playerId).emit("recieveMsg", {senderId: playerId, system: true, Msg });
       }
       res.send({ status: true });
     } catch (error) {
@@ -81,9 +80,9 @@ module.exports = (io) => {
       io.in(players[0].playerId).emit("gameState", result);
       io.in(players[1].playerId).emit("gameState", result);
 
-      const Msg = `${playerId} has made a bid`;
+      const Msg = "Made a Bid";
       for (let play of players) {
-        io.in(play.playerId).emit("recieveMsg", { system: true, Msg });
+        io.in(play.playerId).emit("recieveMsg", { senderId: playerId ,system: true, Msg });
       }
       res.send({ status: true });
     } catch (error) {
