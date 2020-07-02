@@ -11,6 +11,7 @@
 }
 .chat-room {
   background-color: azure;
+  min-height: 100vh;
 }
 .Game {
   display: flex;

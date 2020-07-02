@@ -11,8 +11,9 @@ import {
   gameState,
   setMyCharacter,
   reload,
+  disconnected,
 } from "../api/socket/index";
-import { placeBid, placeMove } from "../api/https/index";
+import { placeBid, placeMove, getPlayers } from "../api/https/index";
 function Game({ playerId, roomId }) {
   const textInput = useRef();
 
@@ -22,6 +23,7 @@ function Game({ playerId, roomId }) {
   const winner = calculateWinner(board);
   const [myChar, setChar] = useState("");
   const [btn, setBtn] = useState(false);
+  const [players,setPlayers] = useState([]);
 
   //helper functions
   const toggleBid = () => {
@@ -30,6 +32,10 @@ function Game({ playerId, roomId }) {
 
   const disableBid = () => {
     setBtn((current) => true);
+  };
+
+  const enableBid = () => {
+    setBtn((current) => false);
   };
 
   const disableTurn = () => {
@@ -96,11 +102,11 @@ function Game({ playerId, roomId }) {
       playerId,
       disableBid,
       toggleBid,
+      enableBid,
       enableTurn,
       changePts,
     });
     setMyCharacter({ myChar, setChar });
-
     reload({
       playerId,
       enableTurn,
@@ -109,6 +115,13 @@ function Game({ playerId, roomId }) {
       changePts,
       textInput,
     });
+    disconnected();
+    const addPlayers = async () =>{
+      const payload = {roomId: roomId};
+      const data = await getPlayers({payload});
+      setPlayers((prev)=>[...data.players]);
+    }
+    addPlayers();
   }, []);
 
   useEffect(() => {
@@ -117,6 +130,9 @@ function Game({ playerId, roomId }) {
 
   return (
     <>
+    {isMyTurn && <div className="font d-flex  justify-content-center p-4">
+        {"Place your Move"}
+      </div>}
       <Board squares={board} onClick={handleClick} />
       <div className="font d-flex  justify-content-center p-4">
         {"Points left: " + pts}
@@ -136,13 +152,13 @@ function Game({ playerId, roomId }) {
         </InputGroup>
       </div>
       <div className="d-flex  justify-content-center p-4">
-        <Button className="button " onClick={submitBid} disabled={btn}>
+        <Button className="button " onClick={submitBid} disabled={btn || isMyTurn}>
           Bid
         </Button>
       </div>
 
       <div className="font">{btn && "Waiting for Other Player to Bid"}</div>
-      <div className="font">{winner && "Winner: " + winner}</div>
+      <div className="font">{winner && "Winner: " + (winner===players[0].Character?players[0].playerId:players[1].playerId)}</div>
     </>
   );
 }
