@@ -6,7 +6,6 @@ const style = {
   borderRadius: "10px",
   width: "250px",
   height: "250px",
-  margin: "0 auto",
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gridTemplateRows: "repeat(3, 1fr)",

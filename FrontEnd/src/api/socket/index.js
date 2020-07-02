@@ -33,7 +33,6 @@ export function gameState({
 }) {
   socket.on("gameState", (data) => {
     const { bid, bidWinner, move } = data;
-    console.log(data)
     if (bid.status === "DRAW") {
       disableBid();
       toast.dark("It's a Draw");
@@ -94,8 +93,7 @@ export function reload({
 
 export function recieveMsg({ playerId, setMsgs,isMobile }) {
   socket.on("recieveMsg", ({ senderId, system, Msg }) => {
-    const message = (senderId===playerId)?`Me: ${Msg}` : `${senderId}: ${Msg}`
-    console.log(message)
+    const message = (senderId===playerId)?`You: ${Msg}` : `${senderId}: ${Msg}`
     setMsgs((prev) =>  [...prev, { system, Msg: message }]);
     if(isMobile && system && senderId!==playerId)
       toast.dark(Msg);
