@@ -9,18 +9,22 @@ function socket({
   io.on("connection", (socket) => {
     console.log("Request to join chatroom");
     console.log(socket.id);
-    socket.on("sendMsg", async ({ playerId ,Msg, roomId }) => {
-      console.log(playerId ,Msg, roomId)
+    socket.on("sendMsg", async ({ playerId, Msg, roomId }) => {
+      console.log(playerId, Msg, roomId);
       const players = await findPlayersInRoom({ roomId: roomId });
       for (let play of players)
-        io.in(play.playerId).emit("recieveMsg", { senderId: playerId, system: false, Msg });
+        io.in(play.playerId).emit("recieveMsg", {
+          senderId: playerId,
+          system: false,
+          Msg,
+        });
     });
     socket.on("disconnect", function () {
       socket.emit("disconnected");
-  });
-  socket.on("error", function(){
-    socket.emit("disconnected")
-  })
+    });
+    socket.on("error", function () {
+      socket.emit("disconnected");
+    });
     socket.on("joinRoom", async ({ roomId, playerId }) => {
       if (roomId != null) {
         const players = await findPlayersInRoom({ roomId: roomId });
@@ -53,7 +57,7 @@ function socket({
           socket.join(playerId, function () {
             console.log(socket.id + " has subscribed");
             console.log("Socket now in rooms", io.sockets.adapter.rooms);
-          }); 
+          });
           socket.emit("Char", players.length === 0 ? "X" : "O");
           for (let play of players)
             io.in(play.playerId).emit("joined", players);

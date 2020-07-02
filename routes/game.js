@@ -46,7 +46,11 @@ module.exports = (io) => {
       io.in(players[1].playerId).emit("Move", result);
       const Msg = "Made a Move";
       for (let play of players) {
-        io.in(play.playerId).emit("recieveMsg", {senderId: playerId, system: true, Msg });
+        io.in(play.playerId).emit("recieveMsg", {
+          senderId: playerId,
+          system: true,
+          Msg,
+        });
       }
       res.send({ status: true });
     } catch (error) {
@@ -60,7 +64,6 @@ module.exports = (io) => {
       const players = await findPlayersInRoom({ roomId: roomId });
       if (players.length < 2) res.send({ status: false });
 
-      
       const payload = await addStateToGame({
         playerId,
         roomId,
@@ -69,20 +72,24 @@ module.exports = (io) => {
         event: "bidPlaced",
       });
       const source = await getGameRecords({ roomId: roomId });
-      source.sort((a,b)=>{
+      source.sort((a, b) => {
         const atime = new Date(a.Timestamp).getTime();
         const btime = new Date(b.Timestamp).getTime();
-        return atime-btime;
-      })
+        return atime - btime;
+      });
       const result = getGameState({ players, source });
       console.log(source);
-      console.log("RESULT",result);
+      console.log("RESULT", result);
       io.in(players[0].playerId).emit("gameState", result);
       io.in(players[1].playerId).emit("gameState", result);
 
       const Msg = "Made a Bid";
       for (let play of players) {
-        io.in(play.playerId).emit("recieveMsg", { senderId: playerId ,system: true, Msg });
+        io.in(play.playerId).emit("recieveMsg", {
+          senderId: playerId,
+          system: true,
+          Msg,
+        });
       }
       res.send({ status: true });
     } catch (error) {
@@ -109,7 +116,7 @@ module.exports = (io) => {
     const { roomId } = req.body;
     try {
       const players = await findPlayersInRoom({ roomId: roomId });
-      res.send({players});
+      res.send({ players });
     } catch (error) {
       console.error(error);
       res.sendStatus(500);
