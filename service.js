@@ -2,7 +2,7 @@ function getGameState({ players, source }) {
   const defaultResult = {};
   defaultResult[players[0].playerId] = 100;
   defaultResult["game"] = null;
-  defaultResult["board"] = [];
+  defaultResult["board"] = Array(9).fill(null);
   defaultResult["bid"] = {};
   defaultResult["bid"]["status"] = "DONE";
   defaultResult["bid"][players[0].playerId] = 0;

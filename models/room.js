@@ -8,6 +8,7 @@ const room = mongoose.Schema({
   playerSocket: String,
   Character: String,
   Timestamp: Date,
+  isFull: Boolean,
 });
 
 module.exports = mongoose.model("Room", room);

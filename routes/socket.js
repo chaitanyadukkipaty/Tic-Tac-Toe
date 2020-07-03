@@ -51,7 +51,9 @@ function socket({
               playerId,
               roomId,
               players,
+              isFull: players.length === 0 ? false : true,
             });
+
             players.push(payload);
           }
           socket.join(playerId, function () {

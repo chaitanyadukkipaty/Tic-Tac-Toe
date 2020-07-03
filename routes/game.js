@@ -7,6 +7,8 @@ const {
   findPlayersInRoom,
   findIfPlayerInRoom,
   getGameRecords,
+  findRooms,
+  clearGameStates,
 } = require("../repo/gameRepo");
 const { getGameState } = require("../service");
 const { socket } = require("./socket");
@@ -24,6 +26,27 @@ module.exports = (io) => {
   router.post("/", (req, res) => {
     const room = uuid.v4();
     res.send({ room });
+  });
+
+  router.post("/joinRoom", async (req, res) => {
+    const room = await findRooms();
+    res.send(room);
+  });
+
+  router.post("/reset", async (req, res) => {
+    const { roomId } = req.body;
+    try {
+      const clear = await clearGameStates({ roomId: roomId });
+      const source = await getGameRecords({ roomId: roomId });
+      const players = await findPlayersInRoom({ roomId: roomId });
+      const result = getGameState({ players, source });
+      io.in(players[0].playerId).emit("reset", result);
+      io.in(players[1].playerId).emit("reset", result);
+      res.send({ status: true });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
   });
 
   router.post("/symbolPlaced", async (req, res) => {

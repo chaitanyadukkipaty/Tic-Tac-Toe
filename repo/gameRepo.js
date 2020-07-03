@@ -2,14 +2,16 @@ const Game = require("../models/game");
 const Room = require("../models/room");
 const mongoose = require("mongoose");
 
-async function addPlayerToRoom({ playerId, roomId, players }) {
+async function addPlayerToRoom({ playerId, roomId, players, isFull }) {
   const id = new mongoose.Types.ObjectId();
+  console.log(" xx ", isFull);
   const payload = {
     _id: id,
     playerId: playerId,
     roomId: roomId,
     Character: players.length === 0 ? "X" : "O",
     Timestamp: new Date(),
+    isFull,
   };
   const room = new Room(payload);
   await room.save();
@@ -45,10 +47,25 @@ async function getGameRecords({ roomId }) {
   const source = await Game.find({ roomId: roomId });
   return source;
 }
+
+async function findRooms(limit = 1) {
+  const rooms = await Room.aggregate([
+    { $match: { isFull: false } },
+    { $sample: { size: limit } },
+  ]);
+  return rooms;
+}
+
+async function clearGameStates({ roomId }) {
+  const clear = await Game.deleteMany({ roomId: roomId });
+  return clear;
+}
 module.exports = {
   addPlayerToRoom,
   addStateToGame,
   findPlayersInRoom,
   findIfPlayerInRoom,
   getGameRecords,
+  findRooms,
+  clearGameStates,
 };
