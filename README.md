@@ -12,7 +12,7 @@
 ---
 
 <p align="center">Tic Tac Toe with a <b>Twist</b>.</p>
-<p align="center">Currently live on: http://159.65.145.166:8000</p>
+<p align="center">Currently live on: https://bigbadjoe.com</p>
 
 # Table of Content
 + [Rules](#description)
