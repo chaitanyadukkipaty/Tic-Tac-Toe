@@ -13,6 +13,7 @@ async function addPlayerToRoom({ playerId, roomId, players, isFull }) {
     Timestamp: new Date(),
     isFull,
   };
+  if (isFull) await Room.updateOne({ roomId: roomId }, { isFull: isFull });
   const room = new Room(payload);
   await room.save();
   return room;
