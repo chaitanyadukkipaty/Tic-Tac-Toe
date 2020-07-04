@@ -15,7 +15,7 @@
 }
 @media only screen and (min-width: 768px) {
   .player-card {
-    min-width: 18rem;
+    min-width: 15rem;
   }
 }
 .player-card {
@@ -26,4 +26,34 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+}
+.button-code-block {
+  background-image: url(https://media.mongodb.org/code-block-bg.png);
+  margin: 20px 0;
+  border-left: 5px solid #494747;
+}
+.invite-bar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.invite-input {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+#invite,
+.invite-overlay {
+  font-size: 18px;
+  background-color: #fff;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: azure;
+  color: black;
+  font-weight: bold;
+  text-align: center;
 }

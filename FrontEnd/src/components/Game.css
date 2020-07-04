@@ -1,17 +1,9 @@
-.root {
-  background-color: #121212;
-  min-height: 100vh;
-}
 .font {
   font-size: calc(10px + 2vmin);
   color: white;
 }
 .fill-width {
   width: 100%;
-}
-.chat-room {
-  background-color: azure;
-  min-height: 100vh;
 }
 .Game {
   display: flex;
@@ -53,7 +45,6 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;

@@ -13,6 +13,21 @@ export async function placeMove({ payload }) {
 
 export async function getPlayers({ payload }) {
   const { data } = await axios.post(`${baseUrl}/getPlayers`, payload);
-  const {players} = data;
+  const { players } = data;
   return { players };
+}
+
+export async function resetGame({ payload }) {
+  const { data } = await axios.post(`${baseUrl}/reset`, payload);
+  return { data };
+}
+
+export async function getNewRoom() {
+  const { data } = await axios.post(`${baseUrl}/`);
+  return { data };
+}
+
+export async function joinExistingRoom() {
+  const { data } = await axios.post(`${baseUrl}/joinRoom`);
+  return { data };
 }

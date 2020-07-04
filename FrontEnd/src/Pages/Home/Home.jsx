@@ -1,18 +1,34 @@
 import React from "react";
 import "./Home.css";
-import axios from "axios";
-import { baseUrl } from "../../config.json";
-import { Card, Navbar, Button, Container, Col } from "react-bootstrap";
+import { toast, ToastContainer, Zoom } from "react-toastify";
+import { getNewRoom, joinExistingRoom } from "../../api/https/index";
+import { Card, Navbar, Button, Container, Col, Row } from "react-bootstrap";
 
 function Home() {
   async function createRoom() {
-    const { data } = await axios.post(baseUrl);
+    const { data } = await getNewRoom();
     const path = `/waitingroom/${data.room}`;
+    console.log(path);
+    window.location.href = path;
+  }
+  async function join() {
+    const { data } = await joinExistingRoom();
+    if (data.length === 0 && Array.isArray(data)) {
+      toast.error("No Rooms Available, create new Room to play");
+      return;
+    }
+    const path = `/waitingroom/${data[0].roomId}`;
     console.log(path);
     window.location.href = path;
   }
   return (
     <>
+      <ToastContainer
+        autoClose={5000}
+        transition={Zoom}
+        limit={3}
+        newestOnTop
+      />
       <div className="home-container">
         <Container fluid>
           <Navbar className="nav-color" expand="lg" variant="dark">
@@ -51,11 +67,18 @@ function Home() {
                 </Card.Body>
               </Card>
             </div>
-            <div className=" d-flex  justify-content-center p-2 ">
-              <Button className="button" onClick={() => createRoom()}>
-                {"Start"}
-              </Button>
-            </div>
+            <Row className=" d-flex  justify-content-center">
+              <div className=" p-2 ">
+                <Button className="button" onClick={() => createRoom()}>
+                  {"Create New Room"}
+                </Button>
+              </div>
+              <div className=" p-2 ">
+                <Button className="button" onClick={() => join()}>
+                  {"Join Existing Room"}
+                </Button>
+              </div>
+            </Row>
           </Col>
         </Container>
       </div>

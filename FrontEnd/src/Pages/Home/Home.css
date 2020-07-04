@@ -36,13 +36,6 @@
 .button {
   background-color: #bb86fc;
   border: none;
-  width: 20%;
-}
-.button-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
 }
 .test {
   min-height: 100vh;

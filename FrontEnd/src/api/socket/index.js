@@ -7,16 +7,16 @@ export function joinRoom({ roomId, playerId }) {
   socket.emit("joinRoom", { roomId, playerId });
 }
 
-export function disconnected(){
-  socket.on("disconnect",()=>{
+export function disconnected() {
+  socket.on("disconnect", () => {
     toast.error("You have been disconnected, Reload the page");
-  })
+  });
 }
 
 export function makeMove({ winner, playerId, board, myChar, changeBoard }) {
   socket.on("Move", (data) => {
     const boardCopy = [...board];
-    const { game, bidWinner } = data;
+    const { game } = data;
     if (winner || boardCopy[game]) return;
     changeBoard([...data.board]);
   });
@@ -30,11 +30,14 @@ export function gameState({
   enableTurn,
   enableBid,
   changePts,
+  setDraw,
+  changeBoard,
 }) {
   socket.on("gameState", (data) => {
     const { bid, bidWinner, move } = data;
     if (bid.status === "DRAW") {
       disableBid();
+      setDraw((prev) => true);
       toast.dark("It's a Draw");
     } else if (bid.status === "DONE" && bidWinner === null && move === null) {
       toast.dark("Bids are equal");
@@ -57,7 +60,23 @@ export function gameState({
     if (bid[playerId] === 0 && bid.status === "DONE") {
       toggleBid();
     }
+
     changePts(data[playerId]);
+  });
+}
+
+export function Reset({
+  playerId,
+  changeBoard,
+  changePts,
+  enableBid,
+  setDraw,
+}) {
+  socket.on("reset", (data) => {
+    changeBoard([...data.board]);
+    changePts(data[playerId]);
+    enableBid();
+    setDraw((prev) => false);
   });
 }
 
@@ -91,12 +110,12 @@ export function reload({
   });
 }
 
-export function recieveMsg({ playerId, setMsgs,isMobile }) {
+export function recieveMsg({ playerId, setMsgs, isMobile }) {
   socket.on("recieveMsg", ({ senderId, system, Msg }) => {
-    const message = (senderId===playerId)?`You: ${Msg}` : `${senderId}: ${Msg}`
-    setMsgs((prev) =>  [...prev, { system, Msg: message }]);
-    if(isMobile && system && senderId!==playerId)
-      toast.dark(Msg);
+    const message =
+      senderId === playerId ? `You: ${Msg}` : `${senderId}: ${Msg}`;
+    setMsgs((prev) => [...prev, { system, Msg: message }]);
+    if (isMobile && system && senderId !== playerId) toast.dark(Msg);
   });
 }
 

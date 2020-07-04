@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./WaitingRoom.css";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { baseUrl } from "../../config.json";
+import { getPlayers } from "../../api/https/index";
 import {
   Card,
   Button,
@@ -10,6 +10,7 @@ import {
   FormControl,
   Col,
   Row,
+  Navbar,
 } from "react-bootstrap";
 import logo from "../../assets/images/avatar.png";
 import openSocket from "socket.io-client";
@@ -44,8 +45,8 @@ function WaitingRoom() {
     });
     async function getData() {
       const payload = { roomId: roomId };
-      const { data } = await axios.post(`${baseUrl}/getPlayers`, payload);
-      setPlayers((prev) => data.players);
+      const data = await getPlayers({ payload });
+      setPlayers((prev) => [...data.players]);
       if (data.length === 2) {
         setStartbtn((current) => !current);
         setJoinbtn((current) => !current);
@@ -72,6 +73,9 @@ function WaitingRoom() {
   return (
     <>
       <div className="root">
+        <Navbar className="nav-color" expand="lg" variant="dark">
+          <Navbar.Brand>Big-Bad-Joe</Navbar.Brand>
+        </Navbar>
         <Row className="fill-width">
           <Col
             md={6}
@@ -95,7 +99,7 @@ function WaitingRoom() {
           </Col>
           <Col className="p-4 d-flex flex-column justify-content-center" md={6}>
             <div className="d-flex  justify-content-center p-4">
-              <InputGroup className=" input">
+              <InputGroup className="input">
                 <InputGroup.Prepend>
                   <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
                 </InputGroup.Prepend>
@@ -132,6 +136,9 @@ function WaitingRoom() {
             </Row>
           </Col>
         </Row>
+        <div className="footer p-2 ">
+          {"Share URL with your friends to play with"}
+        </div>
       </div>
     </>
   );

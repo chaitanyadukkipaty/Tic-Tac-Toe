@@ -23,7 +23,7 @@ function GameRoom() {
           newestOnTop
         />
         <Container fluid>
-          <Row style={{ minHeight: "100vh", minWidth: "100vw"}} >
+          <Row style={{ minHeight: "100vh", minWidth: "100vw" }}>
             <Col className="d-flex flex-column justify-content-center align-items-center ">
               <Game playerId={playerId} roomId={roomId} />
             </Col>

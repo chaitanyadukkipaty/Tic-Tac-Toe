@@ -12,8 +12,9 @@ import {
   setMyCharacter,
   reload,
   disconnected,
+  Reset,
 } from "../api/socket/index";
-import { placeBid, placeMove, getPlayers } from "../api/https/index";
+import { placeBid, placeMove, getPlayers, resetGame } from "../api/https/index";
 function Game({ playerId, roomId }) {
   const textInput = useRef();
 
@@ -23,7 +24,8 @@ function Game({ playerId, roomId }) {
   const winner = calculateWinner(board);
   const [myChar, setChar] = useState("");
   const [btn, setBtn] = useState(false);
-  const [players,setPlayers] = useState([]);
+  const [players, setPlayers] = useState([]);
+  const [isDraw, setDraw] = useState(false);
 
   //helper functions
   const toggleBid = () => {
@@ -72,6 +74,10 @@ function Game({ playerId, roomId }) {
     }
   };
 
+  const reset = async () => {
+    const payload = { roomId: roomId };
+    await resetGame({ payload });
+  };
   const submitBid = async () => {
     const bid = textInput.current.value;
     const payload = {
@@ -105,6 +111,14 @@ function Game({ playerId, roomId }) {
       enableBid,
       enableTurn,
       changePts,
+      setDraw,
+    });
+    Reset({
+      playerId,
+      changeBoard,
+      changePts,
+      setDraw,
+      enableBid,
     });
     setMyCharacter({ myChar, setChar });
     reload({
@@ -116,11 +130,11 @@ function Game({ playerId, roomId }) {
       textInput,
     });
     disconnected();
-    const addPlayers = async () =>{
-      const payload = {roomId: roomId};
-      const data = await getPlayers({payload});
-      setPlayers((prev)=>[...data.players]);
-    }
+    const addPlayers = async () => {
+      const payload = { roomId: roomId };
+      const data = await getPlayers({ payload });
+      setPlayers((prev) => [...data.players]);
+    };
     addPlayers();
   }, []);
 
@@ -128,11 +142,16 @@ function Game({ playerId, roomId }) {
     makeMove({ winner, playerId, board, myChar, changeBoard });
   }, [myChar, board]);
 
+  useEffect(() => {
+    console.log(isDraw);
+  }, [isDraw]);
   return (
     <>
-    {isMyTurn && <div className="font d-flex  justify-content-center p-4">
-        {"Place your Move"}
-      </div>}
+      {isMyTurn && (
+        <div className="font d-flex  justify-content-center p-4">
+          {"Place your Move"}
+        </div>
+      )}
       <Board squares={board} onClick={handleClick} />
       <div className="font d-flex  justify-content-center p-4">
         {"Points left: " + pts}
@@ -152,13 +171,32 @@ function Game({ playerId, roomId }) {
         </InputGroup>
       </div>
       <div className="d-flex  justify-content-center p-4">
-        <Button className="button " onClick={submitBid} disabled={btn || isMyTurn}>
+        <Button
+          className="button "
+          onClick={submitBid}
+          disabled={btn || isMyTurn || isDraw || winner}
+        >
           Bid
         </Button>
       </div>
 
-      <div className="font">{btn && "Waiting for Other Player to Bid"}</div>
-      <div className="font">{winner && "Winner: " + (winner===players[0].Character?players[0].playerId:players[1].playerId)}</div>
+      <div className="font">
+        {btn && !isDraw && "Waiting for Other Player to Bid"}
+      </div>
+      <div className="font">
+        {winner &&
+          "Winner: " +
+            (winner === players[0].Character
+              ? players[0].playerId
+              : players[1].playerId)}
+        {(isDraw || winner) && (
+          <div className="d-flex  justify-content-center p-4">
+            <Button className="button " onClick={reset}>
+              Reset
+            </Button>
+          </div>
+        )}
+      </div>
     </>
   );
 }

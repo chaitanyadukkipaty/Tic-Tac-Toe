@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Chat.css";
 import { recieveMsg, sendMsg } from "../api/socket/index";
-import {isMobile} from "react-device-detect";
+import { ScrollView } from "@cantonjs/react-scroll-view";
+import { isMobile } from "react-device-detect";
+
 function Chat({ playerId, roomId }) {
   const chat = useRef();
+  const messagesEndRef = useRef(null);
   const [msgs, setMsgs] = useState([]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   const sendChat = () => {
     const Msg = chat.current.value;
@@ -20,12 +27,14 @@ function Chat({ playerId, roomId }) {
     });
     recieveMsg({ playerId, setMsgs, isMobile });
   }, []);
+
+  useEffect(scrollToBottom, [msgs]);
   return (
     <div className="chat-room">
-      <ul className="pages">
+      <ol className="pages">
         <li className="chat page">
           <div className="chatArea">
-            <ul className="messages">
+            <div className="messages overflow-auto" style={{ height: "90vh" }}>
               {msgs.map(({ system, Msg }, i) =>
                 system ? (
                   <li className="system-msg" key={i}>
@@ -35,11 +44,16 @@ function Chat({ playerId, roomId }) {
                   <li key={i}>{Msg}</li>
                 )
               )}
-            </ul>
+              <div ref={messagesEndRef} />
+            </div>
+            <input
+              ref={chat}
+              className="inputMessage"
+              placeholder="Type here..."
+            />
           </div>
-          <input ref={chat} className="inputMessage" placeholder="Type here..." />
         </li>
-      </ul>
+      </ol>
     </div>
   );
 }
